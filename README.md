@@ -100,6 +100,7 @@ The server starts on `http://localhost:3000` by default (override with `PORT`).
 
 ## API Endpoints
 
+## Base URL: https://just-committers.vercel.app
 ### `GET /api/v1/health`
 
 Returns server liveness status and current UTC timestamp.
