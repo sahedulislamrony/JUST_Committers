@@ -1,5 +1,5 @@
-import app from './app';
-import { config } from './config/environment';
+import app from '@/app';
+import { config } from '@/config/environment';
 
 let server: ReturnType<typeof app.listen>;
 

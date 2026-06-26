@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { getHealthData } from '../services/health.service';
+import { getHealthData } from '@/api/v1/services/health.service';
 
 export const getHealth = (req: Request, res: Response, next: NextFunction): void => {
   try {

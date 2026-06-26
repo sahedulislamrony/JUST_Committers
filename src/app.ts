@@ -2,10 +2,10 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import hpp from 'hpp';
-import { config } from './config/environment';
-import { rateLimiter } from './middlewares/rateLimiter.middleware';
-import { errorHandler, createApiError } from './middlewares/error.middleware';
-import apiRouter from './api/index';
+import { config } from '@/config/environment';
+import { rateLimiter } from '@/middlewares/rateLimiter.middleware';
+import { errorHandler, createApiError } from '@/middlewares/error.middleware';
+import apiRouter from '@/api/index';
 
 const app = express();
 
