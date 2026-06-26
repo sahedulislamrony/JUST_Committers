@@ -1,6 +1,6 @@
 # JUST Committers - Fintech Ticket Analysis Server
 
-> A production-ready Node.js + TypeScript Express server with DeepSeek AI integration, built for fintech customer support automation. Features Zod-validated I/O schemas, layered security middleware, prompt injection protection, PIN/OTP redaction, hard 25-second endpoint timeouts, and a structured AI Copilot for customer ticket analysis.
+> A production-ready Node.js + TypeScript Express server with AI integration, built for fintech customer support automation. Features Zod-validated I/O schemas, layered security middleware, prompt injection protection, PIN/OTP redaction, hard 25-second endpoint timeouts, and a structured AI Copilot for customer ticket analysis.
 
 ---
 
@@ -28,7 +28,7 @@
 | Framework | Express | ^4.19.2 |
 | Timeout Guard | connect-timeout | ^1.9.0 |
 | Schema Validation | Zod | ^4.4.3 |
-| AI SDK | openai (OpenAI-compatible) | ^6.45.0 |
+| AI SDK | OpenAI-compatible Model| ^6.45.0 |
 | Security Headers | Helmet | ^7.1.0 |
 | Rate Limiting | express-rate-limit | ^7.2.0 |
 | CORS | cors | ^2.8.5 |
@@ -82,9 +82,7 @@ Open `.env` and fill in your values — see the [Environment Variables](#environ
 | `RATE_LIMIT_MAX` | No | Max requests per IP per window | `100` |
 | `DEEPSEEK_API_KEY` | **Required** | Your DeepSeek API secret key | `sk-...` |
 | `DEEPSEEK_BASE_URL` | **Required** | DeepSeek-compatible API base URL | `https://api.deepseek.com/v1` |
-| `DEEPSEEK_MODEL` | **Required** | Model identifier string | `deepseek-chat` |
-
-> **Tip:** Any OpenAI-compatible provider (Groq, Together AI, Ollama, etc.) can be substituted by changing `DEEPSEEK_BASE_URL`, `DEEPSEEK_API_KEY`, and `DEEPSEEK_MODEL` — no code changes required.
+| `DEEPSEEK_MODEL` | **Required** | Model identifier string | `deepseek-v4-flash` |
 
 ---
 
@@ -187,7 +185,7 @@ The core Fintech AI Copilot endpoint. Accepts a customer complaint and transacti
 
 | Model | Provider | Where It Runs | Why It Was Chosen |
 |---|---|---|---|
-| `deepseek-chat` *(default)* | [DeepSeek](https://platform.deepseek.com/) | DeepSeek Cloud API | OpenAI SDK-compatible, excellent instruction following, reliable JSON-mode compliance, and extreme cost efficiency. |
+| `deepseek-v4-flash` *(default)* | [DeepSeek](https://platform.deepseek.com/) | DeepSeek Cloud API | OpenAI SDK-compatible, excellent instruction following, reliable JSON-mode compliance, and extreme cost efficiency. |
 
 ### Provider-Agnostic Design
 
@@ -270,8 +268,8 @@ To comply with strict 30-second judge harness limit bounds, a hard timeout is en
 
 ## Cost Reasoning
 
-By selecting `deepseek-chat` as the default model:
-* **Cost Savings**: DeepSeek input/output is roughly **10-30x cheaper** than GPT-4o.
+By selecting `deepseek-v4-flash` as the default model:
+* **Cost Savings**: DeepSeek input/output is roughly **10-30x cheaper** than GPT models.
 * **API Cost Per Transaction**: A standard request with ~500 input and ~300 output tokens translates to **under $0.0002 per request**.
 * **Zero Rewrite Cost**: Migrating to cheaper local setups (like Ollama or Llama-3) is completely configuration-based.
 
@@ -280,8 +278,7 @@ By selecting `deepseek-chat` as the default model:
 ## Assumptions
 
 1. **State-Free Operations**: The application is entirely stateless. The calling client is expected to pass all transaction context.
-2. **Upstream Gateway Auth**: Authentication and user session validation are assumed to be handled at the gateway or proxy level.
-3. **English-Optimized System Prompts**: High-quality reasoning prompts are built using English syntax, although basic mixed language structure hints are processed.
+2. **English-Optimized System Prompts**: High-quality reasoning prompts are built using English syntax, although basic mixed language structure hints are processed.
 
 ---
 
