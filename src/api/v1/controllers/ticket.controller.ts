@@ -19,12 +19,17 @@ export const handleAnalyzeTicket = async (req: Request, res: Response, next: Nex
     // 2 & 3. Run Security Checks (Prompt Injection and PIN/OTP Sanitization)
     const sanitizedPayload = sanitizePayload(validationResult.data);
 
+    if (req.timedout) return;
+
     // 4. Invoke AI Service (contains structured response & output validation)
     const analysisResponse = await analyzeTicketWithAI(sanitizedPayload);
+
+    if (req.timedout) return;
 
     // 5. Send Final response
     res.status(200).json(analysisResponse);
   } catch (error) {
+    if (req.timedout) return;
     next(error);
   }
 };
