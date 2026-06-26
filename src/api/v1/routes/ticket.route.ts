@@ -7,6 +7,10 @@ const router = Router();
 router.route('/analyze-ticket')
   .post(handleAnalyzeTicket)
   .all((req: Request, res: Response, next: NextFunction) => {
+    if (req.method === 'OPTIONS' || req.method === 'HEAD') {
+      return next();
+    }
+    res.setHeader('Allow', 'POST, OPTIONS, HEAD');
     next(createApiError(405, `Method ${req.method} not allowed on /analyze-ticket`));
   });
 
